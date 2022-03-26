@@ -1,11 +1,86 @@
 # Домашнее задание к занятию "3.4. Операционные системы, лекция 2"
 
 #1. На лекции мы познакомились с node_exporter. В демонстрации его исполняемый файл запускался в background. Этого достаточно для демо, но не для настоящей production-системы, где процессы должны находиться под внешним управлением. Используя знания из лекции по systemd, создайте самостоятельно простой unit-файл для node_exporter: 
-#-поместите его в автозагрузку, 
+Долго не получалось разобраться с запуском и работой node-exporter
+
+Оказалось процесс по умолчанию был запущен, видимо после установки prometheus
+
+Решил проблему удалением из автозагрузки node-exporter, чтобы запустить и настроить скачанный
+
+1. Исполняемый файл был перенесен в /usr/local/bin
+
+2. unit:
+sudo systemctl edit --full --force node_exporter.service
+
+[Unit]
+
+Description=Prometheus Node Exporter
+
+Wants=network-online.target
+
+After=network-online.target
+
+[Service]
+
+User=node_exporter
+
+Group=node_exporter
+
+Type=simple
+
+ExecStart=/usr/local/bin/node_exporter
+
+[Install]
+
+WantedBy=multi-user.target
+
+
+#-поместите его в автозагрузку,
 #-предусмотрите возможность добавления опций к запускаемому процессу через внешний файл (посмотрите, например, на systemctl cat cron), 
 #-удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается. 
 
+Сделано. Процесс автоматически запускается. systemctl stop/start успешно останавливает и запускает процесс. При перезагрузке виртуальной машины node_exporter работает
+
 #2. Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.
+
+Процессор:
+
+node_cpu_seconds_total{cpu="0",mode="idle"} 3267.1
+
+node_cpu_seconds_total{cpu="0",mode="system"} 26.37
+
+node_cpu_seconds_total{cpu="0",mode="user"} 36.89
+
+node_cpu_seconds_total{cpu="1",mode="idle"} 3264.3
+
+node_cpu_seconds_total{cpu="1",mode="system"} 23.87
+
+node_cpu_seconds_total{cpu="1",mode="user"} 35.11
+
+Память:
+
+node_memory_MemAvailable_bytes 6.85146112
+
+node_memory_MemFree_bytes 7.2208384
+
+node_memory_Mlocked 1.8972672
+
+Диски:
+
+node_disk_io_time_seconds_total{device="sda"} 29.944
+    
+node_disk_read_bytes_total{device="sda"} 4.91038
+
+node_disk_read_time_seconds_total{device="sda"} 9.599
+    
+node_disk_write_time_seconds_total{device="sda"} 21.816
+
+Сеть:
+
+node_network_receive_errs_total{device="eth0"} 
+node_network_receive_bytes_total{device="eth0"} 
+node_network_transmit_bytes_total{device="eth0"}
+node_network_transmit_errs_total{device="eth0"}
 
 Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
 
