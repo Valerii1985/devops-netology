@@ -82,7 +82,7 @@ node_network_receive_bytes_total{device="eth0"}
 node_network_transmit_bytes_total{device="eth0"}
 node_network_transmit_errs_total{device="eth0"}
 
-#3. Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
+# 3. Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
 
 #в конфигурационном файле /etc/netdata/netdata.conf в секции [web] замените значение с localhost на bind to = 0.0.0.0,
 #добавьте в Vagrantfile проброс порта Netdata на свой локальный компьютер и сделайте vagrant reload:
