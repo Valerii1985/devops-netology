@@ -71,9 +71,9 @@ sdc                         8:32   0  2.5G  0 disk
 </pre>
 
 #15. Протестируйте целостность файла:
-####root@vagrant:~# gzip -t /tmp/new/test.gz
-####root@vagrant:~# echo $?
-####0
+root@vagrant:~# gzip -t /tmp/new/test.gz
+root@vagrant:~# echo $?
+0
 
 <pre>Тест целостности проходит, как в примере. Дополнительно попробовал с ключем -tv</pre>
 <pre>
@@ -91,9 +91,9 @@ gzip -tv /tmp/new/test.gz
 [16860.068331] md/raid1:md127: Disk failure on sdb1, disabling device.
                md/raid1:md127: Operation continuing on 1 devices.</pre>
 #19. Протестируйте целостность файла, несмотря на "сбойный" диск он должен продолжать быть доступен:
-####root@vagrant:~# gzip -t /tmp/new/test.gz
-####root@vagrant:~# echo $?
-####0
+root@vagrant:~# gzip -t /tmp/new/test.gz
+root@vagrant:~# echo $?
+0
 <pre>
 gzip -tv /tmp/new/test.gz
 /tmp/new/test.gz:        OK
