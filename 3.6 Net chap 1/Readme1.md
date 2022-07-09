@@ -47,7 +47,7 @@ Connection closed by foreign host.
 
 ### приложите скриншот консоли браузера в ответ.
 
-![Screenshot](/Users/valeriikiselev/Desktop/Снимок экрана 2022-07-09 в 11.41.33.jpg)
+![Screenshot](https://github.com/Valerii1985/devops-netology/blob/main/3.6%20Net%20chap%201/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202022-07-09%20%D0%B2%2011.41.33.jpg)
 
 #3. Какой IP адрес у вас в интернете?
 Какому провайдеру принадлежит ваш IP адрес? Какой автономной системе AS? Воспользуйтесь утилитой whois
