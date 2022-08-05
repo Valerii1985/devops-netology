@@ -195,6 +195,53 @@ To see these additional updates run: apt list --upgradable
 Last login: Tue Aug  2 18:27:34 2022 from 127.0.0.1
 </pre>
 # 6. Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход на удаленный сервер осуществлялся по имени сервера.
+<pre>
+mv /home/valerii/.ssh/id_rsa /home/valerii/.ssh/new_rsa
 
+touch ~/.ssh/config && chmod 600 ~/.ssh/config
+
+nano .ssh/config
+
+    Host new
+     HostName 127.0.0.1
+     User valerii
+     IdentityFile ~/.ssh/new_rsa
+
+ssh new
+Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-122-generic aarch64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Вт 02 авг 2022 21:25:28 CEST
+
+  System load:             0.1
+  Usage of /:              54.4% of 18.04GB
+  Memory usage:            56%
+  Swap usage:              0%
+  Processes:               228
+  Users logged in:         1
+  IPv4 address for enp0s9: 10.0.2.15
+  IPv6 address for enp0s9: fec0::f0b4:d7ff:fec4:5888
+
+ * Super-optimized for small spaces - read how we shrank the memory
+   footprint of MicroK8s to make it the smallest full K8s around.
+
+   https://ubuntu.com/blog/microk8s-memory-optimisation
+
+108 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+Last login: Tue Aug  2 21:11:23 2022 from 10.0.2.15
+
+</pre>
 # 7. Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.
-
+<pre>
+sudo tcpdump -c 100 -w 0001.pcap -i enp0s9
+tcpdump: listening on enp0s9, link-type EN10MB (Ethernet), capture size 262144 bytes
+100 packets captured
+100 packets received by filter
+0 packets dropped by kernel
+</pre>
