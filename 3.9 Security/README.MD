@@ -245,4 +245,4 @@ tcpdump: listening on enp0s9, link-type EN10MB (Ethernet), capture size 262144 b
 100 packets received by filter
 0 packets dropped by kernel
 </pre>
-![1.jpg](1.jpg)
+![1.JPG](1.JPG)
