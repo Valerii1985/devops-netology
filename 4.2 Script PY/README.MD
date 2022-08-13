@@ -1,4 +1,4 @@
-# Домашнее задание к занятию "4.2. Использование Python для решения типовых DevOps задач"
+# Домашнее задание к занятию "4.2. Использование Python для решения типовых DevOps задач."
 
 ## Обязательная задача 1
 
@@ -37,12 +37,25 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+
+bash_command = ["cd ~/devops_netology", "pwd", "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+
+for result in result_os.split('\n'):
+    if result.find('/Users') != -1:
+        git_path = result
+    elif result.find('изменено') != -1:
+        prepare_result = result.replace('\tизменено:     ', '')
+        print(git_path, prepare_result)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+/Users/valeriikiselev/devops_netology  4.2 Script PY/README.MD
+/Users/valeriikiselev/devops_netology  pytest
 ```
 
 ## Обязательная задача 3
