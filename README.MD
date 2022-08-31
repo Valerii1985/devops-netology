@@ -222,5 +222,5 @@ systemctl restart nginx.service
 ```
 sudo crontab -e
 
-00 10 01 * * /home/val/generate_sert
+00 10 01 * * /home/val/sertgenerate
 ```
