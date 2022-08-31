@@ -72,6 +72,8 @@ val@val:~$ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gp
 
 val@val:~$ sudo apt update && sudo apt install vault
 
+val@val:~$ vault server -dev
+
 val@val:~$ export VAULT_ADDR='http://127.0.0.1:8200'
 
 val@val:~$ export VAULT_TOKEN="s.FrwwqFkRqkNzpt0QbdjnzUuB"
@@ -134,8 +136,11 @@ See 'snap info jq' for additional versions.
 val@val:~$ sudo snap install jq
 jq 1.5+dfsg-1 from Michael Vogt (mvo\u272a) installed
 
-val@val:~$ vault write -format=json pki_int/intermediate/generate/internal      common_name="example.com Intermediate Authority"      issuer_name="example-dot-com-intermediate"      | jq -r '.data.csr' > pki_intermediate.csr
-
+val@val:~$ vault write -format=json pki_int/intermediate/generate/internal \
+     common_name="example.com Intermediate Authority" \
+     issuer_name="example-dot-com-intermediate" \
+     | jq -r '.data.csr' > pki_intermediate.csr
+     
 val@val:~$ vault write -format=json pki/root/sign-intermediate \
      issuer_ref="root-2022" \
      csr=@pki_intermediate.csr \
@@ -153,42 +158,69 @@ val@val:~$ vault write pki_int/roles/example-dot-com \
 
 Success! Data written to: pki_int/roles/example-dot-com
 
-val@val:~$ vault write pki_int/issue/example-dot-com common_name="test.example.com" ttl="24h"
-Key                 Value
----                 -----
-ca_chain            [-----BEGIN CERTIFICATE-----
-MIIDpjCCAo6gAwIBAgIUfZGkqrMn8C10PLMdt+w5o6aAvcQwDQYJKoZIhvcNAQEL
-BQAwFjEUMBIGA1UEAxMLZXhhbXBsZS5jb20wHhcNMjIwODI5MTcxNTE5WhcNMjcw
-ODI4MTcxNTQ5WjAtMSswKQYDVQQDEyJleGFtcGxlLmNvbSBJbnRlcm1lZGlhdGUg
-QXV0aG9yaXR5MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu3omwpp5
-gh+r4BUo6XRl4gWSorxmjkEg3GgyF3XaCYID+kxMqpTZ2Tukcv1uRxMojuG8RDys
-9Jh93WsLDxZQtJsWwOoTOwIglj/DVDGBrph5StsU3s+WytVukFIkWAumifV+56CT
-a/BmBcFlIKYuIYE1qjEpEMzQU0dQB0/d21tOIk4yr6nHyO9ZaMDycFkDXpUq4FLq
-1RSqLPocpa0SN1ecCnvaee6BNnfgSBCIEtCeXnH/6nlb4IhtLzKEfmyU+l3jPnPl
-SnkoKXgm8KiQoQuZGWqPGwzF8w1NeKgNbVBmU7Wa+RPFp9kfKSx/twCb1zqRLcCF
-yWMMecgY+FTszwIDAQABo4HUMIHRMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8E
-BTADAQH/MB0GA1UdDgQWBBRKLutrilC8xAmRdR9VQsdPRoL26DAfBgNVHSMEGDAW
-gBQ5JCZylSDX4QRrbheJX4FfD9oE9jA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUH
-MAKGH2h0dHA6Ly8xMjcuMC4wLjE6ODIwMC92MS9wa2kvY2EwMQYDVR0fBCowKDAm
-oCSgIoYgaHR0cDovLzEyNy4wLjAuMTo4MjAwL3YxL3BraS9jcmwwDQYJKoZIhvcN
-AQELBQADggEBAGpQNu8oPnTREOe49ATVs8VGLt2ZSqeKJ9ucgNYfRi+jteKPfdn6
-QwRzyQu3B21SB6tXhg4Z15+Y8l5KlNDBhP24og2/ao8VZ0XUWFhzNEKQBS/tJBaW
-2O+fnqxEdQXHDvNtx6OWLhIUrIbMfP9WGX+uUKTAnj1G9vQtreaGVyVv5ahcUYCF
-dcJL/klKUxPw4DLQq9ufjhx0xNe/fAtUda9ke6HDptnTX8l0ufttEUQm0PP9a6Cd
-XugGzUaRzvnsBV1qG8v6o8kS3n1x5awGHuFCWaog/aqXxm5ZdvozrGV8NroJrIGr
-akZoipiZJ6DzyAbtg9ntpRSyayKtvPeCYGc=
------END CERTIFICATE-----]
-
-....
-
-private_key_type    rsa
-serial_number       79:cb:28:b1:77:ec:b2:95:f1:b0:29:13:a8:4c:23:8a:74:63:de:15
-
+val@val:~$ vault write -format=json pki_int/issue/example-dot-com common_name="test.example.com" ttl="720h" > test.example.com.crt
+val@val:~$ cat test.example.com.crt | jq -r .data.certificate > test.example.com.crt.pem
+val@val:~$ cat test.example.com.crt | jq -r .data.issuing_ca >> test.example.com.crt.pem
+val@val:~$ cat test.example.com.crt | jq -r .data.private_key > test.example.com.crt.key
 ```
 - Процесс установки и настройки сервера nginx
 ```
 val@val:~$ sudo apt install nginx
+
+val@val:~$ sudo mkdir -p /var/www/test.example.com/html
+
+val@val:~$ sudo chmod -R 755 /var/www/test.example.com/
+
+val@val:~$ sudo nano /etc/nginx/sites-available/test.example.com
+
+val@val:~$ sudo mv test.example.com.crt.key /etc/ssl
+
+val@val:~$ sudo mv test.example.com.crt.pem /etc/ssl
+
+val@val:~$ sudo nano /etc/nginx/nginx.conf
+server {
+        listen              443 ssl;
+        server_name test.example.com www.test.example.com;
+
+        ssl_certificate     "/etc/ssl/test.example.com.crt.pem";
+        ssl_certificate_key "/etc/ssl/test.example.com.crt.key";
+
+        ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
+
+        root /var/www/test.example.com/html;
+        index index.html index.htm index.nginx-debian.html;
+
+
+
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+val@val:~$ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+val@val:~$ sudo systemctl restart nginx
 ```
 - Страница сервера nginx в браузере хоста не содержит предупреждений 
 - Скрипт генерации нового сертификата работает (сертификат сервера ngnix должен быть "зеленым")
+```
+val@val:~$ sudo nano sertgenerator
+#!/usr/bin/env bash
+
+vault write -format=json pki_int/issue/example-dot-com common_name="test.example.com" ttl="720h" > /home/val/test.example.com.crt
+
+cat /home/val/test.example.com.crt | jq -r .data.certificate > /etc/ssl/test.example.com.crt.pem
+cat /home/val/test.example.com.crt | jq -r .data.issuing_ca >> /etc/ssl/test.example.com.crt.pem
+cat /home/val/test.example.com.crt | jq -r .data.private_key > /etc/ssl/test.example.com.crt.key
+
+systemctl restart nginx.service
+```
 - Crontab работает (выберите число и время так, чтобы показать что crontab запускается и делает что надо)
+```
+sudo crontab -e
+
+00 10 01 * * /home/val/generate_sert
+```
