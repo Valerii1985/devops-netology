@@ -205,7 +205,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 val@val:~$ sudo systemctl restart nginx
 ```
 - Страница сервера nginx в браузере хоста не содержит предупреждений
-  ![](/Users/valeriikiselev/devops_netology/ssl.jpg)
+  ![](https://github.com/Valerii1985/devops-netology/blob/main/ssl.jpg)
 - Скрипт генерации нового сертификата работает (сертификат сервера ngnix должен быть "зеленым")
 ```
 val@val:~$ sudo nano sertgenerator
