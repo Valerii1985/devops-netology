@@ -35,7 +35,7 @@ vagrant@server1:~/netology$ docker build -t vkiselev/nginx .
 docker run -it -d -p 8080:80 --name ng vkiselev/nginx
 ...
 ```
-![]()
+![](https://github.com/Valerii1985/devops-netology/blob/main/5.3%20Docker/screenshot.jpg)
 ## Задача 2
 
 Посмотрите на сценарий ниже и ответьте на вопрос:
