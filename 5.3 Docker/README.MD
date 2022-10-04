@@ -18,7 +18,7 @@ Hey, Netology
 </body>
 </html>
 ```
-![]
+
 Опубликуйте созданный форк в своем репозитории и предоставьте ответ в виде ссылки на https://hub.docker.com/username_repo.
 
 ```
@@ -35,7 +35,7 @@ vagrant@server1:~/netology$ docker build -t vkiselev/nginx .
 docker run -it -d -p 8080:80 --name ng vkiselev/nginx
 ...
 ```
-
+![]
 ## Задача 2
 
 Посмотрите на сценарий ниже и ответьте на вопрос:
