@@ -19,7 +19,7 @@
 - Скриншот страницы свойств созданной ВМ, как на примере ниже:
 
 <p align="center">
-  <img height="600" src="./assets/yc_01.png" width="1200"/>
+  <img height="600" src="./assets/vm.png" width="1200"/>
 </p>
 
 ## Задача 3
